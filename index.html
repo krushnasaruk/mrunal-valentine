@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Mrunal ❤️</title>
+    <!-- Cute Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LEVEL 1: THE DOOR -->
+    <div id="level-1" class="screen active">
+        <h1 class="title">Knock Knock!</h1>
+        <p class="subtitle">(Tap the door 3 times)</p>
+        <div class="door-frame">
+            <div class="door" id="door">
+                <div class="knob"></div>
+                <div class="plate">3</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 2: THE LETTER -->
+    <div id="level-2" class="screen">
+        <h1 class="title">Read Me!</h1>
+        <div class="letter-icon" id="letter-icon">
+            <div class="envelope-body"></div>
+            <div class="envelope-flap"></div>
+            <div class="heart-seal">❤️</div>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal hidden" id="letter-modal">
+            <div class="modal-content">
+                <p class="letter-text">
+                    My Dearest Mrunal, <br><br>
+                    Every moment with you is my favorite. You make life colorful, fun, and so full of love.<br><br>
+                    I wanted to make something special just for you. Keep going, I have a question for you... <br><br>
+                    Love, <br>
+                    Krushna
+                </p>
+                <button class="btn" id="finish-letter">Keep Going ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 3: BALLOON POP (NEW) -->
+    <div id="level-3" class="screen">
+        <h1 class="title">Pop the Balloons! 🎈</h1>
+        <p class="subtitle">Find the hidden key 🔑</p>
+        <div id="balloon-container"></div>
+    </div>
+
+    <!-- LEVEL 4: PHOTO TOSS (Was Level 3) -->
+    <div id="level-4" class="screen">
+        <h1 class="title">Our Memories</h1>
+        <p class="subtitle">(Tap to toss them!)</p>
+
+        <div class="photo-stack" id="photo-stack">
+            <!-- Photos are stacked using Z-Index. Last one is on top. -->
+
+            <!-- Bottom Card (The Key) -->
+            <div class="photo" style="z-index: 1;">
+                <div class="img-box" style="background: #ff99c8;">
+                    <h1>❤️</h1>
+                </div>
+                <p>Ready to ask...</p>
+            </div>
+
+            <!-- Media 1: JPG -->
+            <div class="photo" style="z-index: 2; transform: rotate(-5deg);">
+                <div class="img-box">
+                    <img src="./0bd16202-a399-4677-8928-deed9977c814.JPG" alt="Us">
+                </div>
+                <p>Memories ❤️</p>
+            </div>
+
+            <!-- Media 2: JPG -->
+            <div class="photo" style="z-index: 3; transform: rotate(3deg);">
+                <div class="img-box">
+                    <img src="./0c3fb8b4-522f-4a96-be3a-d1d2d91dffcd.JPG" alt="Us">
+                </div>
+                <p>So cute!</p>
+            </div>
+
+            <!-- Media 3: Video -->
+            <div class="photo" style="z-index: 4; transform: rotate(-2deg);">
+                <div class="img-box">
+                    <video src="./96a87b61-da19-4c12-a02d-b09e9c37a0a4.MP4" autoplay muted loop playsinline></video>
+                </div>
+                <p>Remember this? 🎥</p>
+            </div>
+
+            <!-- Media 4: JPG -->
+            <div class="photo" style="z-index: 5; transform: rotate(4deg);">
+                <div class="img-box">
+                    <img src="./37fc632c-9f63-47b5-94a4-3920ae184561.JPG" alt="Us">
+                </div>
+                <p>Beautiful ✨</p>
+            </div>
+
+            <!-- Media 5: JPG -->
+            <div class="photo" style="z-index: 6; transform: rotate(-3deg);">
+                <div class="img-box">
+                    <img src="./9ba5abae-68ba-4736-8c5a-a7410bdf35da.JPG" alt="Us">
+                </div>
+                <p>My Favorite ❤️</p>
+            </div>
+
+            <!-- Media 6: JPG (New) -->
+            <div class="photo" style="z-index: 7; transform: rotate(2deg);">
+                <div class="img-box">
+                    <img src="./493a7dd3-f1f7-440f-ac42-4e6e4387d982.JPG" alt="Us">
+                </div>
+                <p>Love this one! 🥰</p>
+            </div>
+
+            <!-- Media 7: Video (Top) -->
+            <div class="photo" style="z-index: 8; transform: rotate(-2deg);">
+                <div class="img-box">
+                    <video src="./152F6A19-AE51-45B2-8D0F-190EE1BB948E 2.MP4" autoplay muted loop playsinline></video>
+                </div>
+                <p>Watch this! 🎬</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL 5: THE PROPOSAL (Was Level 4) -->
+    <div id="level-5" class="screen">
+        <h1 class="title" style="font-size: 2.5rem;">Will you be my Valentine?</h1>
+        <div class="gif-container">
+            <img src="./5468562f-5d5e-4d44-a841-ff931e2dfb14 2.JPG" alt="Us" id="cute-gif">
+            <!-- Replaced GIF with user's specific image -->
+        </div>
+        <div class="buttons-container">
+            <button class="btn yes-btn" id="yes-btn">YES! 😍</button>
+            <button class="btn no-btn" id="no-btn">No 😢</button>
+        </div>
+    </div>
+
+    <!-- LEVEL 6: SUCCESS (Was Level 5) -->
+    <div id="level-6" class="screen">
+        <h1 class="title">YAY!!! 🎉</h1>
+        <p class="subtitle">Best. Valentine. Ever.</p>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/dummy-success/giphy.gif" alt="Happy" id="success-gif">
+        </div>
+        <p class="love-note">I love you, Mrunal! ❤️ - Krushna</p>
+    </div>
+
+    <!-- Anime.js for robust animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
