@@ -31,6 +31,10 @@ function showLevel(level) {
     if (level === 3) {
         initBalloons();
     }
+    // Initialize Memory Game if level 4
+    if (level === 4) {
+        initMemoryGame();
+    }
 }
 
 // ---- LEVEL 1: DOOR KNOCK ----
@@ -89,7 +93,11 @@ function initBalloons() {
 
     const colors = ['#ff5d8f', '#ff8fab', '#ffc8dd', '#b5838d', '#e5989b'];
     const numBalloons = 15;
-    const keyIndex = Math.floor(Math.random() * numBalloons);
+
+    // Logic: Key found on 1st, 2nd, 3rd, or 4th pop.
+    let poppedCount = 0;
+    const targetPop = Math.floor(Math.random() * 4) + 1;
+    let keyFound = false;
 
     for (let i = 0; i < numBalloons; i++) {
         const balloon = document.createElement('div');
@@ -98,14 +106,16 @@ function initBalloons() {
         // Random style
         const bg = colors[Math.floor(Math.random() * colors.length)];
         balloon.style.background = bg;
-        // Hacky way to color the triangle knot
-        // In real code we'd use CSS var, but here we just leave the knot pink or ignore it.
 
         balloon.style.left = `${Math.random() * 80 + 10}%`;
         balloon.style.top = `${Math.random() * 80 + 10}%`;
 
         // Click Logic
         balloon.addEventListener('click', (e) => {
+            if (keyFound) return;
+
+            poppedCount++;
+
             // Pop animation
             anime({
                 targets: balloon,
@@ -115,7 +125,9 @@ function initBalloons() {
                 easing: 'easeOutQuad',
                 complete: () => {
                     balloon.remove();
-                    if (i === keyIndex) {
+                    // Check if this was the lucky pop
+                    if (poppedCount === targetPop) {
+                        keyFound = true;
                         foundKey(e.clientX, e.clientY);
                     }
                 }
@@ -149,22 +161,115 @@ function foundKey(x, y) {
     key.style.zIndex = "100";
     document.body.appendChild(key);
 
-    // Animate key to center
+    // Animate key to center (Faster now)
     anime({
         targets: key,
         scale: [0, 2],
         rotate: 360,
-        duration: 1000,
+        duration: 800,
     });
 
-    // Go to Level 4
+    // Go to Level 4 (Memory) - Faster transition
     setTimeout(() => {
         key.remove();
         showLevel(4);
-    }, 1500);
+    }, 1000);
 }
 
-// ---- LEVEL 4: PHOTO TOSS ----
+// ---- LEVEL 4: MEMORY MATCH ----
+function initMemoryGame() {
+    const grid = document.getElementById('memory-grid');
+    grid.innerHTML = '';
+
+    // 4 Pairs of images
+    const images = [
+        './0bd16202-a399-4677-8928-deed9977c814.JPG',
+        './0c3fb8b4-522f-4a96-be3a-d1d2d91dffcd.JPG',
+        './37fc632c-9f63-47b5-94a4-3920ae184561.JPG',
+        './9ba5abae-68ba-4736-8c5a-a7410bdf35da.JPG'
+    ];
+
+    // Duplicate and shuffle
+    let cards = [...images, ...images];
+    cards.sort(() => 0.5 - Math.random());
+
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let canClick = false; // Wait for preview
+
+    // Create card elements
+    const cardElements = [];
+
+    cards.forEach(imgSrc => {
+        const card = document.createElement('div');
+        card.classList.add('memory-card');
+        card.classList.add('flipped'); // Start flipped (Preview)
+        card.dataset.img = imgSrc;
+
+        const front = document.createElement('div');
+        front.classList.add('front');
+        front.innerHTML = '❤️';
+
+        const back = document.createElement('div');
+        back.classList.add('back');
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        back.appendChild(img);
+
+        card.appendChild(front);
+        card.appendChild(back);
+
+        card.addEventListener('click', () => {
+            if (!canClick) return;
+            if (flippedCards.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    canClick = false; // Prevent clicks while checking
+                    setTimeout(checkMatch, 800);
+                }
+            }
+        });
+
+        grid.appendChild(card);
+        cardElements.push(card);
+    });
+
+    // Preview Phase: Hide cards after 10 seconds
+    setTimeout(() => {
+        cardElements.forEach(c => c.classList.remove('flipped'));
+        canClick = true;
+        // Optional: Update title to say "GO!" or similar, but keeping it simple.
+    }, 10000);
+
+    function checkMatch() {
+        const [c1, c2] = flippedCards;
+        if (c1.dataset.img === c2.dataset.img) {
+            // Match
+            c1.classList.add('matched');
+            c2.classList.add('matched');
+            matchedPairs++;
+            flippedCards = [];
+            canClick = true;
+
+            if (matchedPairs === 4) {
+                setTimeout(() => {
+                    alert("YAY! Good Memory! ❤️");
+                    showLevel(5);
+                }, 500);
+            }
+        } else {
+            // No match
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            flippedCards = [];
+            canClick = true;
+        }
+    }
+}
+
+// ---- LEVEL 5: PHOTO TOSS ----
 const photos = document.querySelectorAll('.photo');
 let activePhotoIndex = photos.length - 1; // Start with top photo
 
@@ -198,14 +303,14 @@ photos.forEach((photo, index) => {
 
                 // If we clicked the last one (index 0, which is the heart/key)
                 if (index === 0) {
-                    showLevel(5);
+                    showLevel(6);
                 }
             }
         });
     });
 });
 
-// ---- LEVEL 5: PROPOSAL ----
+// ---- LEVEL 6: PROPOSAL ----
 const yesBtn = document.getElementById('yes-btn');
 const noBtn = document.getElementById('no-btn');
 const buttonsContainer = document.querySelector('.buttons-container');
@@ -230,7 +335,7 @@ function swapButtons() {
 }
 
 yesBtn.addEventListener('click', () => {
-    showLevel(6);
+    showLevel(7);
     celebrate();
 });
 
